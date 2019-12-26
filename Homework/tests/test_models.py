@@ -17,4 +17,5 @@ class RoomTest(TestCase):
 
     def test_rooms_filtering(self):
         rooms = Room.objects.filter(price__gt=1500)
+        print(rooms.count())
         self.assertEqual(rooms.count(), 2)

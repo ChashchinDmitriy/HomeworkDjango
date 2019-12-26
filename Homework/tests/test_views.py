@@ -1,10 +1,11 @@
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from rest_framework import status
 
 from ..models import Review, Room
 from ..serializers import ReviewSerializer
 
+client = Client()
 
 class GetAllReviewsTest(TestCase):
     def setUp(self):
