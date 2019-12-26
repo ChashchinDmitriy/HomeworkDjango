@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Для того чтобы оставить отзыв, заполните пожалуйста форму</h1>
+    <form method="POST" class="review-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Отправить</button>
+    </form>
+{% endblock %}

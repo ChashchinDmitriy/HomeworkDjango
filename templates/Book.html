@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Для того чтобы забронировать, заполните пожалуйста форму</h1>
+    <form method="POST" class="booking-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Забронировать</button>
+    </form>
+{% endblock %}

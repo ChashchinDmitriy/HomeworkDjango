@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for room in rooms %}
+        <div class="room">
+            <h1><a href="{{ room.get_absolute_url }}">{{ room.title }}</a></h1>
+            <h2>Описание комнаты</h2>
+            <p>{{ room.get_text_preview }}</p>
+            <a class="btn btn-default" href="{% url 'booking' id=room.id %}"><span
+                    class="glyphicon glyphicon-home"></span></a>
+            <a class="btn btn-default" href="{{ room.get_absolute_url }}"><span
+                    class="glyphicon glyphicon-comment"></span></a>
+        </div>
+    {% endfor %}
+{% endblock %}

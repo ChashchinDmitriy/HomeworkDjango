@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Наши контакты:</h1>
+    <h2>Адрес: Ул. Пушкина Д. Колотушкина</h2>
+    <h2>Телефон: 8-800-555-35-35</h2>
+    <h2>Email: help@hazbinhotel.com</h2>
+    <h1>Остались вопросы? Заполните форму внизу и наша поддержка вам обязательно ответит!</h1>
+    <form method="POST" class="question-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Отправить</button>
+    </form>
+{% endblock %}

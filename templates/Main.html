@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Добро пожаловать на сайт отеля Хазбин</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1 align="center">Добро пожаловать на главную страницу отеля Хазбин</h1>
+{% block header %}
+    <nav class="header-nav h2">
+        <a href="/">Главная</a> | <a href="/rooms/">Номера</a> | <a href="/contacts/">Контакты</a>
+        <!-- | <a href="/unbook">Отменить бронирование</a>-->
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h2 align="center">Посмотрите, что люди говорят о нашем отеле!</h2>
+    {% for review in reviews %}
+        <h1 align="justify">Ля, да это же отзыв!</h1>
+        <div class="review" align="justify">
+            <p>Дата публикации отзыва: {{ review.publish_date }}</p>
+            <p>Тип комнаты: <a href="rooms/{{ review.room.id }}">{{ review.room }}</a></p>
+            <p>Имя посетителя: {{ review.name }}</p>
+            <p>Отзыв: {{ review.review_text }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+</body>
+
+</html>

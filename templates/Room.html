@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="room">
+        <h1>
+            {{ room.title }}
+            <a class="btn btn-default" href="{% url 'booking' id=room.id %}"><span
+                    class="glyphicon glyphicon-home"></span></a>
+            <a class="btn btn-default" href="{% url 'add_review' id=room.id %}"><span
+                    class="glyphicon glyphicon-plus-sign"></span></a>
+        </h1>
+        <h2>Описание комнаты</h2>
+        <p>Цена за ночь: {{ room.price }}</p>
+        <p>Что вас ждет: {{ room.description }}</p>
+        <h1>Понравился номер - забронируйте не откладывая!</h1>
+        <form method="POST" class="booking-form">
+            {% csrf_token %}
+            {{ form1.as_p }}
+            <button type="submit" class="save btn btn-default">Забронировать</button>
+        </form>
+        <h1>Уже были у нас - расскажите об этом другим!</h1>
+        <form method="POST" class="review-form">
+            {% csrf_token %}
+            {{ form2.as_p }}
+            <button type="submit" class="save btn btn-default">Отправить</button>
+        </form>
+        <h2>Отзывы посетителей</h2>
+        {% for review in room.reviews.all %}
+            <p>Дата публикации отзыва: {{ review.publish_date }}</p>
+            <p>Имя посетителя: {{ review.name }}</p>
+            <p>{{ review.review_text }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
