@@ -17,7 +17,6 @@ class RoomTest(TestCase):
 
     def test_premium_and_filtering(self):
         room = Room.objects.get(title='Королевский двуместный номер')
-        room.get_premium()
         self.assertEqual(room.is_premium, True)
         rooms = Room.premium.all()
         self.assertEqual(rooms.count(), 1)

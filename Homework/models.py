@@ -18,10 +18,10 @@ class Room(models.Model):
     def get_absolute_url(self):
         return reverse('room_detail', args=[str(self.id)])
 
-    def get_premium(self):
+    def save(self, *args, **kwargs):
         if self.price > 1500:
             self.is_premium = True
-            self.save()
+        super().save(*args, **kwargs)
 
     def get_text_preview(self):
         return truncatewords(self.description, 25)
@@ -32,7 +32,6 @@ class Room(models.Model):
     class Meta:
         verbose_name = 'Комната'
         verbose_name_plural = 'Комнаты'
-
 
 class Question(models.Model):
     name = models.CharField(max_length=64, verbose_name="Ваше имя:")
@@ -45,7 +44,6 @@ class Question(models.Model):
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
-
 
 class Review(models.Model):
     room = models.ForeignKey('Homework.Room',
@@ -68,7 +66,6 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
-
 
 class Booking(models.Model):
     room = models.ForeignKey('Homework.Room',

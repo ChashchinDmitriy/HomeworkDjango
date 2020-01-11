@@ -119,10 +119,3 @@ class RoomsViewSet(ActionSerializedViewSet):
 
         serializer = self.get_serializer(premium_rooms, many=True)
         return Response(serializer.data)
-
-    @action(detail=True,
-            methods=['post'])
-    def get_premium(self, request, pk=None):
-        room = self.get_object()
-        room.publish()
-        return Response({'message': 'room got premium'}, status=status.HTTP_200_OK)
