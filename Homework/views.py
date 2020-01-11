@@ -2,21 +2,21 @@ from django.shortcuts import (get_object_or_404,
                               redirect, render,
                               render_to_response)
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .forms import ReviewForm, QuestionForm, BookingForm
 from .models import Room, Review
-from .serializers import (ReviewSerializer)
+from .serializers import (ReviewSerializer, RoomCreateUpdateSerializer, RoomDetailSerializer, RoomListSerializer)
 
 
 def main(request):
     reviews = Review.objects.all()
     return render(request, 'main.html', {'reviews': reviews})
 
-
 def room_list(request):
     rooms = Room.objects.all()
     return render(request, 'Room_list.html', {'rooms': rooms})
-
 
 def room_detail(request, id):
     room = get_object_or_404(Room, id=id)
@@ -40,7 +40,6 @@ def room_detail(request, id):
         form2 = ReviewForm()
     return render(request, 'Room.html', {'room': room, 'form1': form1, 'form2': form2})
 
-
 def add_review(request, id):
     room = get_object_or_404(Room, id=id)
     if request.method == "POST":
@@ -54,7 +53,6 @@ def add_review(request, id):
         form = ReviewForm()
     return render(request, 'Add_review.html', {'form': form})
 
-
 def contacts(request):
     if request.method == "POST":
         form = QuestionForm(request.POST)
@@ -65,7 +63,6 @@ def contacts(request):
     else:
         form = QuestionForm()
     return render(request, 'contacts.html', {'form': form})
-
 
 def booking(request, id):
     room = get_object_or_404(Room, id=id)
@@ -80,13 +77,52 @@ def booking(request, id):
         form = BookingForm()
     return render(request, 'book.html', {'form': form})
 
-
 def handler404(request, exception, template_name="404.html"):
     response = render_to_response("404.html")
     response.status_code = 404
     return response
 
 
+class ActionSerializedViewSet(viewsets.ModelViewSet):
+    action_serializers = {}
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            if self.action in self.action_serializers:
+                return self.action_serializers[self.action]
+
+        return self.serializer_class
+
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+
+class RoomsViewSet(ActionSerializedViewSet):
+    serializer_class = RoomListSerializer
+    queryset = Room.objects.all()
+
+    action_serializers = {
+        'list': RoomListSerializer,
+        'retrieve': RoomDetailSerializer,
+        'create': RoomCreateUpdateSerializer,
+        'update': RoomCreateUpdateSerializer,
+    }
+
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset
+
+    @action(detail=False)
+    def premium_rooms(self, request):
+        premium_rooms = Room.premium.all()
+
+        serializer = self.get_serializer(premium_rooms, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True,
+            methods=['post'])
+    def get_premium(self, request, pk=None):
+        room = self.get_object()
+        room.publish()
+        return Response({'message': 'room got premium'}, status=status.HTTP_200_OK)

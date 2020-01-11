@@ -3,14 +3,25 @@ from django.template.defaultfilters import truncatewords
 from django.urls import reverse
 from django.utils import timezone
 
+from .managers import RoomPremiumManager, RoomManager
+
 
 class Room(models.Model):
     title = models.CharField(max_length=64, verbose_name="Название комнаты")
     description = models.TextField(verbose_name="Описание комнаты")
     price = models.IntegerField(verbose_name="Цена за ночь")
+    is_premium = models.BooleanField(default=False, verbose_name="Лакшери комната?")
+
+    objects = RoomManager()
+    premium = RoomPremiumManager()
 
     def get_absolute_url(self):
         return reverse('room_detail', args=[str(self.id)])
+
+    def get_premium(self):
+        if self.price > 1500:
+            self.is_premium = True
+            self.save()
 
     def get_text_preview(self):
         return truncatewords(self.description, 25)
