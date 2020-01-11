@@ -97,7 +97,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
 
-
 class RoomsViewSet(ActionSerializedViewSet):
     serializer_class = RoomListSerializer
     queryset = Room.objects.all()
