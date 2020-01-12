@@ -1,22 +1,30 @@
 from django.shortcuts import (get_object_or_404,
-                              redirect, render,
+                              redirect,
+                              render,
                               render_to_response)
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .forms import ReviewForm, QuestionForm, BookingForm
+from .forms import (ReviewForm,
+                    QuestionForm,
+                    BookingForm)
 from .models import Room, Review
-from .serializers import (ReviewSerializer, RoomCreateUpdateSerializer, RoomDetailSerializer, RoomListSerializer)
+from .serializers import (ReviewSerializer,
+                          RoomCreateUpdateSerializer,
+                          RoomDetailSerializer,
+                          RoomListSerializer)
 
 
 def main(request):
     reviews = Review.objects.all()
     return render(request, 'main.html', {'reviews': reviews})
 
+
 def room_list(request):
     rooms = Room.objects.all()
     return render(request, 'Room_list.html', {'rooms': rooms})
+
 
 def room_detail(request, id):
     room = get_object_or_404(Room, id=id)
@@ -40,6 +48,7 @@ def room_detail(request, id):
         form2 = ReviewForm()
     return render(request, 'Room.html', {'room': room, 'form1': form1, 'form2': form2})
 
+
 def add_review(request, id):
     room = get_object_or_404(Room, id=id)
     if request.method == "POST":
@@ -53,6 +62,7 @@ def add_review(request, id):
         form = ReviewForm()
     return render(request, 'Add_review.html', {'form': form})
 
+
 def contacts(request):
     if request.method == "POST":
         form = QuestionForm(request.POST)
@@ -63,6 +73,7 @@ def contacts(request):
     else:
         form = QuestionForm()
     return render(request, 'contacts.html', {'form': form})
+
 
 def booking(request, id):
     room = get_object_or_404(Room, id=id)
@@ -76,6 +87,7 @@ def booking(request, id):
     else:
         form = BookingForm()
     return render(request, 'book.html', {'form': form})
+
 
 def handler404(request, exception, template_name="404.html"):
     response = render_to_response("404.html")
@@ -93,9 +105,11 @@ class ActionSerializedViewSet(viewsets.ModelViewSet):
 
         return self.serializer_class
 
+
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
 
 class RoomsViewSet(ActionSerializedViewSet):
     serializer_class = RoomListSerializer

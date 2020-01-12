@@ -33,6 +33,7 @@ class Room(models.Model):
         verbose_name = 'Комната'
         verbose_name_plural = 'Комнаты'
 
+
 class Question(models.Model):
     name = models.CharField(max_length=64, verbose_name="Ваше имя:")
     email = models.EmailField(max_length=64, verbose_name="Адрес электронной почты")
@@ -44,6 +45,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
+
 
 class Review(models.Model):
     room = models.ForeignKey('Homework.Room',
@@ -66,6 +68,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
 
 class Booking(models.Model):
     room = models.ForeignKey('Homework.Room',

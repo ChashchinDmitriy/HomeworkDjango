@@ -80,25 +80,25 @@ class UpdateSingleRoomTest(TestCase):
             'description': 'New',
             'price': 1500,
         }
-        self.invalid_payload = {
-            'title': 'Стандартный двуместный номер (две кровати)',
-            'description': None,
-            'price': 1500,
+        'title': 'Стандартный двуместный номер (две кровати)',
+        'description': None,
+        'price': 1500,
         }
 
-    def test_valid_update_room(self):
-        response = client.put(reverse('room-detail',
-                                      kwargs={'pk': self.room.pk}),
-                              data=json.dumps(self.valid_payload),
-                              content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        def test_valid_update_room(self):
+            response = client.put(reverse('room-detail',
+                                          kwargs={'pk': self.room.pk}),
+                                  data=json.dumps(self.valid_payload),
+                                  content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_invalid_update_room(self):
-        response = client.put(reverse('room-detail',
-                                      kwargs={'pk': self.room.pk}),
-                              data=json.dumps(self.invalid_payload),
-                              content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        def test_invalid_update_room(self):
+            response = client.put(reverse('room-detail',
+                                          kwargs={'pk': self.room.pk}),
+                                  data=json.dumps(self.invalid_payload),
+                                  content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            self.invalid_payload = {
 
 
 class DeleteSinglePostTest(TestCase):
