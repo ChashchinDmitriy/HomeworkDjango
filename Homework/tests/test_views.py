@@ -80,6 +80,7 @@ class UpdateSingleRoomTest(TestCase):
             'description': 'New',
             'price': 1500,
         }
+        self.invalid_payload = {
         'title': 'Стандартный двуместный номер (две кровати)',
         'description': None,
         'price': 1500,
