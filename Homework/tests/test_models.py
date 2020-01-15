@@ -20,3 +20,8 @@ class RoomTest(TestCase):
         self.assertEqual(room.is_premium, True)
         rooms = Room.premium.all()
         self.assertEqual(rooms.count(), 1)
+        
+    def test_premium_update(self):
+        room = Room.objects.get(price=1000)
+        room.price=5000
+        self.assertEqual(room.is_premium, True)
