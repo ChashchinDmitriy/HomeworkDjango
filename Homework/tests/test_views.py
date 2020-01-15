@@ -74,11 +74,11 @@ class UpdateSingleRoomTest(TestCase):
     def setUp(self):
         self.room = Room.objects.create(title='Стандартный двуместный номер (две кровати)',
                                         description='Двуместный номер с двумя односпальными кроватями и базовым набором удобств: зеркало, шкаф для одежды, тумбочка для личных вещей.',
-                                        price=1500)
+                                        price=1000)
         self.valid_payload = {
             'title': 'Стандартный двуместный номер (две кровати)',
             'description': 'New',
-            'price': 1500,
+            'price': 5000,
         }
         self.invalid_payload = {
         'title': 'Стандартный двуместный номер (две кровати)',
@@ -91,6 +91,7 @@ class UpdateSingleRoomTest(TestCase):
                                           kwargs={'pk': self.room.pk}),
                                   data=json.dumps(self.valid_payload),
                                   content_type='application/json')
+            self.assertEqual(self.room.is_premium, True)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         def test_invalid_update_room(self):
